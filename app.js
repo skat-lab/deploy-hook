@@ -55,17 +55,18 @@ app.post('/deploy-staging', urlencodedParser, function(req, res) {
                 }
 
                 // Configure the request
+                console.log("responding to... " + req.body.response_url);
                 var options = {
                     url: req.body.response_url,
                     method: 'POST',
                     headers: headers,
-                    form: {
+                    body: JSON.stringify({
                         'response_type': 'in_channel',
                         'text': 'Deployment status',
                         'attachments': [{
                             'text': stdout
                         }]
-                    }
+                    })
                 }
 
                 // Start the request
