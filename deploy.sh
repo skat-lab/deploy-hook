@@ -7,7 +7,7 @@ echo "Deploying $BRANCH..."
 
 cd "$PROJECT_ROOT"
 git fetch --all
-git checkout --force "$BRANCH"
+git checkout "$BRANCH"
 
 #Deployment tasks
 docker-compose up -d
