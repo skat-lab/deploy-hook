@@ -35,7 +35,7 @@ app.post('/deploy-staging', urlencodedParser, function(req, res) {
         if (arrayParams[0] == "frontend" && branch) {
             var data = {
                 "response_type": "ephemeral",
-                "text": "Started deployment process of branch " + branch "to test"
+                "text": "Started deployment process of branch " + branch 
             }
 
             res.json(data);
