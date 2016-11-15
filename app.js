@@ -34,7 +34,7 @@ app.post('/deploy-staging', urlencodedParser, function(req, res) {
         var branch = arrayText[1];
 
         console.log(arrayText);
-        execFile('./deploy.sh '+ branch, function(error, stdout, stderr) {
+        execFile('./deploy.sh ' + branch, function(error, stdout, stderr) {
             if (error) {
                 console.log(error)
             }

@@ -1,3 +1,4 @@
 #!/usr/bin/env bash
 
-while read x ; do echo $x ; done
+echo "the $1 is the branch"
+echo "bye bye"
