@@ -1,4 +1,12 @@
 #!/usr/bin/env bash
 
-echo "the $1 is the branch"
+PROJECT_ROOT = "../ionic-conference-app"
+BRANCH = $1
+
+echo "the $BRANCH is the branch"
+
+cd $PROJECT_ROOT
+git fetch -all
+git checkout --force $BRANCH
+
 echo "bye bye"
