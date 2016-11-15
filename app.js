@@ -3,7 +3,6 @@ require('dotenv').config()
 var express = require('express')
 var bodyParser = require('body-parser')
 var execFile = require('child_process').exec;
-var fs = require('fs');
 
 var app = express()
 
@@ -31,11 +30,11 @@ app.post('/deploy-staging', urlencodedParser, function(req, res) {
         res.status(200).send('Got it ' + req.body.user_name);
         console.log(req.body);
 
-        var branch = req.body.text.substring(indexStaging+8);
         var arrayText = req.body.text.split(' ');
+        var branch = arrayText[1]]
 
         console.log(arrayText);
-        execFile('./deploy.sh', function(error, stdout, stderr) {
+        execFile('./deploy.sh '+ branch, function(error, stdout, stderr) {
             if (error) {
                 console.log(error)
             }
