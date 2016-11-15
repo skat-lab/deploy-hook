@@ -27,7 +27,7 @@ app.get('/', function(req, res) {
 app.post('/deploy-staging', urlencodedParser, function(req, res) {
 
     if (req.body.token == process.env.SLACK_TOKEN) {
-        res.status(200).send('Got it ' + req.body.user_name);
+        // res.status(200).send('Got it ' + req.body.user_name);
         console.log(req.body);
 
         var arrayText = req.body.text.split(' ');
@@ -39,8 +39,25 @@ app.post('/deploy-staging', urlencodedParser, function(req, res) {
                 console.log(error)
             }
             console.log(stdout);
-	    //var response = stdout;
+	           //var response = stdout;
             //res.status(200).send(response);
+            var data = {
+              'response_type': 'in_channel',
+              'text': stdout,
+            }
+            res.json(data);
+
+            //
+            // var post_options = {
+            //   host: req.body.response_url,
+            //   port: '80',
+            //   method: 'POST',
+            //   headers: {
+            //     'Content-Type': 'application/json'
+            //   }
+            // }
+
+
         });
     }
 })
