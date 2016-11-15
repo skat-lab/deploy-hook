@@ -33,8 +33,8 @@ app.post('/deploy-staging', urlencodedParser, function(req, res) {
         var arrayParams = req.body.text.split(' ');
         var branch = arrayParams[1];
 
-        if(arrayParams[0] == "frontend") {
-          var status = deployFrontend();
+        if(arrayParams[0] == "frontend" && branch) {
+          var status = deployFrontend(branch);
           var data = {
             'response_type': 'in_channel',
             'text': 'Deployment status',
@@ -73,7 +73,7 @@ app.post('/deploy-staging', urlencodedParser, function(req, res) {
     }
 })
 
-function deployFrontend() {
+function deployFrontend(branch) {
   execFile('./deploy.sh ' + branch, function(error, stdout, stderr) {
       if (error) {
           console.log(error)
