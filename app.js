@@ -30,34 +30,57 @@ app.post('/deploy-staging', urlencodedParser, function(req, res) {
         // res.status(200).send('Got it ' + req.body.user_name);
         console.log(req.body);
 
-        var arrayText = req.body.text.split(' ');
-        var branch = arrayText[1];
+        var arrayParams = req.body.text.split(' ');
+        var branch = arrayParams[1];
 
-        console.log(arrayText);
-        execFile('./deploy.sh ' + branch, function(error, stdout, stderr) {
-            if (error) {
-                console.log(error)
-            }
-            console.log(stdout);
-	           //var response = stdout;
-            //res.status(200).send(response);
-            var data = {
-              'response_type': 'in_channel',
-              'text': stdout,
-            }
-            res.json(data);
-
-            //
-            // var post_options = {
-            //   host: req.body.response_url,
-            //   port: '80',
-            //   method: 'POST',
-            //   headers: {
-            //     'Content-Type': 'application/json'
-            //   }
-            // }
-
-
-        });
+        if(arrayParams[0] == "frontend") {
+          var status = deployFrontend();
+          var data = {
+            'response_type': 'in_channel',
+            'text': 'Deployment status',
+            'attachments': [
+              {
+                'text': stdout
+              }
+            ]
+          }
+          res.json(data);
+        }
+        console.log(arrayParams);
+        // execFile('./deploy.sh ' + branch, function(error, stdout, stderr) {
+        //     if (error) {
+        //         console.log(error)
+        //         var data = {
+        //           "response_type": "ephemeral",
+        //           "text": "Sorry, that didn't work. Please try again."
+        //         }
+        //         res.json(data);
+        //     }
+        //     console.log(stdout);
+	      //      //var response = stdout;
+        //     //res.status(200).send(response);
+        //     var data = {
+        //       'response_type': 'in_channel',
+        //       'text': 'Deployment status',
+        //       'attachments': [
+        //         {
+        //           'text': stdout
+        //         }
+        //       ]
+        //     }
+        //     res.json(data);
+        // });
     }
 })
+
+function deployFrontend() {
+  execFile('./deploy.sh ' + branch, function(error, stdout, stderr) {
+      if (error) {
+          console.log(error)
+          return error;
+      }
+      console.log(stdout);
+      return stdout;
+  });
+
+}
