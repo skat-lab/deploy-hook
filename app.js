@@ -30,18 +30,19 @@ app.post('/deploy-staging', urlencodedParser, function(req, res) {
     if (req.body.token == process.env.SLACK_TOKEN) {
         res.status(200).send('Got it ' + req.body.user_name);
         console.log(req.body);
+
+        //var branch = req.body.text.substring(indexStaging+8);
+        var arrayText = req.body.text.split(' ');
+
+        console.log(arrayText);
+        execFile('./deploy.sh', function(error, stdout, stderr) {
+            if (error) {
+                console.log(error)
+            }
+            console.log(stdout);
+        });
     }
 
-    //var branch = req.body.text.substring(indexStaging+8);
-    var arrayText = req.body.text.split(' ');
-
-    console.log(arrayText);
-    execFile('./deploy.sh', function(error, stdout, stderr) {
-        if (error) {
-            console.log(error)
-        }
-        console.log(stdout);
-    });
-}
+})
 
 });
