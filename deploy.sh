@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PROJECT_ROOT="../ionic-conference-app"
+PROJECT_ROOT="../tolderfonen-frontend"
 BRANCH="$1"
 
 echo "Deploying $BRANCH..."
@@ -10,3 +10,6 @@ git fetch --all
 git checkout --force "$BRANCH"
 
 #Deployment tasks
+docker-compose up -d
+docker-compose run -d node bower install --allow-root
+docker-compose run -d node gulp --type=staging
