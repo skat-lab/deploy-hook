@@ -34,19 +34,21 @@ app.post('/deploy-staging', urlencodedParser, function(req, res) {
 
         if (arrayParams[0] == "frontend" && branch) {
             var data = {
-                "response_type": "in_channel",
-                "text": "Started deployment process of branch: " + branch
+                "response_type": "ephemeral",
+                "text": "Started deployment process of branch " + branch "to test"
             }
 
             res.json(data);
-            execFile('./deploy.sh ' + branch, function(error, stdout, stderr) {
+
+            var data = {};
+
+            execFile('./deploy-frontend.sh ' + branch, function(error, stdout, stderr) {
                 if (error) {
                     console.log(error)
-                        // var data = {
-                        //   "response_type": "ephemeral",
-                        //   "text": "Sorry, that didn't work. Please try again."
-                        // }
-                        // res.json(data);
+                        data = {
+                          "response_type": "ephemeral",
+                          "text": "Sorry, that didn't work. Please try again."
+                        }
                 }
 
                 // Set the headers
@@ -55,18 +57,26 @@ app.post('/deploy-staging', urlencodedParser, function(req, res) {
                 }
 
                 // Configure the request
-                console.log("responding to... " + req.body.response_url);
+                data = {
+                  'response_type': 'in_channel',
+                  'text': 'Deployment of ' + branch,
+                  'attachments': [
+                    {
+                      'text': stdout,
+                      'color': '#FFFF3C'
+                    },
+                    {
+                      'text': "Deployment complete. Check it out on http://52.169.112.190:8100/",
+                      'color': '#36a64f'
+                    }
+                  ]
+                }
+
                 var options = {
                     url: req.body.response_url,
                     method: 'POST',
                     headers: headers,
-                    body: JSON.stringify({
-                        'response_type': 'in_channel',
-                        'text': 'Deployment status',
-                        'attachments': [{
-                            'text': stdout
-                        }]
-                    })
+                    body: JSON.stringify(data)
                 }
 
                 // Start the request
@@ -76,19 +86,11 @@ app.post('/deploy-staging', urlencodedParser, function(req, res) {
                         console.log(body)
                     }
                 })
-
-                // var data = {
-                //     'response_type': 'in_channel',
-                //     'text': 'Deployment status',
-                //     'attachments': [{
-                //         'text': stdout
-                //     }]
-                // }
-                // res.json(data);
             });
 
         } else if (arrayParams[0] == "backend" && branch) {
             res.status(200).send('Got it to backend ' + req.body.user_name);
+            //TODO execute backend staging
         } else {
             var data = {
                 "response_type": "ephemeral",
