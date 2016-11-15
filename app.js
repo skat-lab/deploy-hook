@@ -31,7 +31,7 @@ app.post('/deploy-staging', urlencodedParser, function(req, res) {
         res.status(200).send('Got it ' + req.body.user_name);
         console.log(req.body);
 
-        //var branch = req.body.text.substring(indexStaging+8);
+        var branch = req.body.text.substring(indexStaging+8);
         var arrayText = req.body.text.split(' ');
 
         console.log(arrayText);
@@ -42,7 +42,4 @@ app.post('/deploy-staging', urlencodedParser, function(req, res) {
             console.log(stdout);
         });
     }
-
 })
-
-});
