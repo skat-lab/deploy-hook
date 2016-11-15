@@ -23,7 +23,6 @@ app.get('/', function(req, res) {
     res.send('Hello World!')
 })
 
-
 app.post('/deploy-staging', urlencodedParser, function(req, res) {
 
     if (req.body.token == process.env.SLACK_TOKEN) {
@@ -34,53 +33,34 @@ app.post('/deploy-staging', urlencodedParser, function(req, res) {
         var branch = arrayParams[1];
 
         if(arrayParams[0] == "frontend" && branch) {
-          var status = deployFrontend(branch);
-          var data = {
-            'response_type': 'in_channel',
-            'text': 'Deployment status',
-            'attachments': [
-              {
-                'text': stdout
+          execFile('./deploy.sh ' + branch, function(error, stdout, stderr) {
+              if (error) {
+                  console.log(error)
+                  var data = {
+                    "response_type": "ephemeral",
+                    "text": "Sorry, that didn't work. Please try again."
+                  }
+                  res.json(data);
               }
-            ]
+              var data = {
+                'response_type': 'in_channel',
+                'text': 'Deployment status',
+                'attachments': [
+                  {
+                    'text': stdout
+                  }
+                ]
+              }
+              res.json(data);
+          });
+        } else if (arrayParams[0] == "backend" && branch) {
+            res.status(200).send('Got it to backend ' + req.body.user_name);
+        } else {
+          var data = {
+            "response_type": "ephemeral",
+            "text": "Sorry, that didn't work. Please try again."
           }
           res.json(data);
         }
-        console.log(arrayParams);
-        // execFile('./deploy.sh ' + branch, function(error, stdout, stderr) {
-        //     if (error) {
-        //         console.log(error)
-        //         var data = {
-        //           "response_type": "ephemeral",
-        //           "text": "Sorry, that didn't work. Please try again."
-        //         }
-        //         res.json(data);
-        //     }
-        //     console.log(stdout);
-	      //      //var response = stdout;
-        //     //res.status(200).send(response);
-        //     var data = {
-        //       'response_type': 'in_channel',
-        //       'text': 'Deployment status',
-        //       'attachments': [
-        //         {
-        //           'text': stdout
-        //         }
-        //       ]
-        //     }
-        //     res.json(data);
-        // });
     }
 })
-
-function deployFrontend(branch) {
-  execFile('./deploy.sh ' + branch, function(error, stdout, stderr) {
-      if (error) {
-          console.log(error)
-          return error;
-      }
-      console.log(stdout);
-      return stdout;
-  });
-
-}
