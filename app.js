@@ -39,6 +39,8 @@ app.post('/deploy-staging', urlencodedParser, function(req, res) {
                 console.log(error)
             }
             console.log(stdout);
+	    //var response = stdout;
+            //res.status(200).send(response);
         });
     }
 })
