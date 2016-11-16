@@ -1,0 +1,16 @@
+version: '2'
+services:
+  node:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes_from:
+      - volumes_source
+    command: node app.js 
+
+  volumes_source:
+      image: tianon/true
+      volumes:
+          - ./:/app
