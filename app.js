@@ -24,7 +24,7 @@ app.get('/', function(req, res) {
     res.send('Hello World!')
 })
 
-app.post('/deploy-staging', urlencodedParser, function(req, res) {
+app.post('/deploy-test', urlencodedParser, function(req, res) {
 
     if (req.body.token == process.env.SLACK_TOKEN) {
         console.log(req.body);
