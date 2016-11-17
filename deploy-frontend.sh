@@ -1,12 +1,12 @@
 #!/bin/bash
 
 BRANCH="$1"
-PROJECT_DIRECTORY="tolderfonen-frontend-$BRANCH"
+REPO="$2"
+PROJECT_DIRECTORY="$REPO-$BRANCH"
 
 if [ ! -d "$PROJECT_DIRECTORY" ]; then
   # Control will enter here if $PROJECT_DIRECTORY doesn't exist.
-  #git clone https://$GITHUB_TOKEN@github.com/skat/tolderfonen-frontend.git "$PROJECT_DIRECTORY"
-  git@github.com:skat/tolderfonen-frontend.git
+  git clone git@github.com:$REPOS.git "$PROJECT_DIRECTORY"
 fi
 
 cd "$PROJECT_DIRECTORY"
