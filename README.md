@@ -10,4 +10,5 @@ A simple [expressjs] (http://expressjs.com/) for listening on webhooks from Slac
 
 1. Open up your favorite command line / console / terminal
 2. ```git clone https://github.com/skat-lab/deploy-hook.git```
-3. Navigate into the project folder and run ```pm2 start app.js```
+3. Create a .env file, and define SLACK-TOKEN and REPOSITORY environments
+4. Navigate into the project folder and run ```pm2 start app.js```
