@@ -1,14 +1,22 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
-PROJECT_ROOT="../tolderfonen-frontend"
 BRANCH="$1"
+PROJECT_DIRECTORY="tolderfonen-frontend-$BRANCH"
 
-cd "$PROJECT_ROOT"
-git fetch --all
-if [ `git branch --list $BRANCH `]
+if [ ! -d "$PROJECT_DIRECTORY" ]; then
+  # Control will enter here if $PROJECT_DIRECTORY doesn't exist.
+  #git clone https://$GITHUB_TOKEN@github.com/skat/tolderfonen-frontend.git "$PROJECT_DIRECTORY"
+  git@github.com:skat/tolderfonen-frontend.git
+fi
+
+cd "$PROJECT_DIRECTORY"
+
+if [ `git branch -r --list origin/$BRANCH ` ]
 then
-  git pull
-  #git checkout "$BRANCH"
+  git checkout $BRANCH
+  echo "Hej hej"
+
+  cp config/nginx.staging.conf config/nginx.conf
 
   #Deployment tasks
   docker-compose up -d
