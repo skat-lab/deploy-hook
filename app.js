@@ -66,7 +66,7 @@ app.post('/deploy-staging', urlencodedParser, function(req, res) {
                       'color': '#FFFF3C'
                     },
                     {
-                      'text': "Deployment complete. Check it out on http://52.169.112.190:8100/",
+                      'text': "Deployment complete. Check it out on http://52.169.112.190/",
                       'color': '#36a64f'
                     }
                   ]
